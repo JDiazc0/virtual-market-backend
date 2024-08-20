@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('store_promotions', function (Blueprint $table) {
             $table->id();
+            $table->tinyInteger('promotion_status')->default(1);
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->unsignedBigInteger('id_store');
+            $table->unsignedBigInteger('id_promotion');
+            $table->foreign('id_store')->references('id')->on('stores');
+            $table->foreign('id_promotion')->references('id')->on('promotions');
             $table->timestamps();
         });
     }

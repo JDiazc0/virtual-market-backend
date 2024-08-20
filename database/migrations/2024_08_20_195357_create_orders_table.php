@@ -13,6 +13,19 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('instructions');
+            $table->date('delivery_date');
+            $table->decimal('product_value', total: 12, places: 2);
+            $table->decimal('shipping_value', total: 10, places: 2);
+            $table->decimal('discount_value', total: 12, places: 2);
+            $table->decimal('taxes_value', total: 11, places: 2);
+            $table->decimal('final_value', total: 12, places: 2);
+            $table->decimal('rate', total: 3, places: 2);
+            $table->string('address');
+            $table->unsignedBigInteger('id_store');
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_store')->references('id')->on('stores');
+            $table->foreign('id_user')->references('id')->on('users');
             $table->timestamps();
         });
     }

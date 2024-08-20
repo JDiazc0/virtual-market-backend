@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('promotions', function (Blueprint $table) {
             $table->id();
+            $table->string('promotion_name');
+            $table->tinyInteger('percentage');
             $table->timestamps();
         });
     }

@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('barcode');
+            $table->string('product_name');
+            $table->string('description');
+            $table->string('size')->nullable();
+            $table->decimal('weight', total: 6, places: 2)->nullable();
             $table->timestamps();
         });
     }
