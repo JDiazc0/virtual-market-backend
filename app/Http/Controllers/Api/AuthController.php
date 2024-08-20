@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
@@ -79,5 +80,20 @@ class AuthController extends Controller
             $cookie = cookie()->forget('cookie_token');
             return response(["message" => "Invalid Credentials"], Response::HTTP_UNAUTHORIZED)->withCookie($cookie);
         };
+    }
+
+    //  Logout profile
+    public function logout(Request $request)
+    {
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        // Revoke tokens
+        $user->tokens()->delete();
+
+        // Remove cookie token
+        $cookie = Cookie::forget('cookie_token');
+
+        return response(["message" => "Logout Ok"], Response::HTTP_OK)->withCookie($cookie);
     }
 }
