@@ -7,6 +7,7 @@ use App\Events\UserRegistered;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -49,5 +50,34 @@ class AuthController extends Controller
 
         // Response
         return response($user, Response::HTTP_CREATED);
+    }
+
+    //  Login user
+    public function login(Request $request)
+    {
+        // Credential Validation
+        $request->validate([
+            'login' => ['required'],
+            'password' => ['required'],
+        ]);
+
+        // Check if login is email or phone
+        $login_type = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+        $credentials = [
+            $login_type => $request->input('login'),
+            'password' => $request->input('password')
+        ];
+
+        // Attemp to login
+        if (Auth::attempt($credentials)) {
+            /** @var \App\Models\User */
+            $user = Auth::user();
+            $token = $user->createToken('token')->plainTextToken;
+            $cookie = cookie('cookie_token', $token, 60 * 24);
+            return response(["token" => $token], Response::HTTP_OK)->withoutCookie($cookie);
+        } else {
+            $cookie = cookie()->forget('cookie_token');
+            return response(["message" => "Invalid Credentials"], Response::HTTP_UNAUTHORIZED)->withCookie($cookie);
+        };
     }
 }
