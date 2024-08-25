@@ -25,4 +25,11 @@ class store extends Model
             ->withPivot('amount')
             ->withTimestamps();
     }
+
+    public function promotions()
+    {
+        return $this->belongsToMany(Promotion::class, 'store_promotions', 'id_store', 'id_promotion')
+            ->withPivot('promotion_status', 'start_date', 'end_date')
+            ->withTimestamps();
+    }
 }
