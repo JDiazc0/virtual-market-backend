@@ -22,6 +22,6 @@ class ProductController extends Controller
     {
         $product = Product::with('stores')->findOrFail($id);
 
-        return response()->json($product);
+        return response()->json($product, Response::HTTP_OK);
     }
 }
