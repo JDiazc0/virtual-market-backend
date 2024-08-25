@@ -18,4 +18,11 @@ class store extends Model
         'neighborhood',
         'rating'
     ];
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'store_products', 'id_store', 'id_product')
+            ->withPivot('amount')
+            ->withTimestamps();
+    }
 }
