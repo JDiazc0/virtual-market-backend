@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('promotion_name');
             $table->tinyInteger('percentage');
+            $table->unsignedBigInteger('id_product')->nullable();
+            $table->foreign('id_product')->references('id')->on('products');
             $table->timestamps();
         });
     }
