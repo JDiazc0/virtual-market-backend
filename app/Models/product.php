@@ -24,4 +24,9 @@ class product extends Model
             ->withPivot('amount')
             ->withTimestamps();
     }
+
+    public function promotion()
+    {
+        return $this->hasOne(Promotion::class, 'id_product');
+    }
 }
