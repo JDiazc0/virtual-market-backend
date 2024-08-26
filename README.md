@@ -130,7 +130,7 @@ This project is a backend API for a virtual marketplace where two types of users
 
 ### Reset Password
 
--   **URL:** api/reset-password?<token>&<email>
+-   **URL:** api/reset-password?{token}&email?{email}
 -   **Method:** POST
 -   **Description:** Password reset method
 -   **Parameters:**
@@ -155,6 +155,180 @@ This project is a backend API for a virtual marketplace where two types of users
 {
     "message": "Your password has been reset."
 }
+```
+
+### Products
+
+-   **URL:** /products
+-   **Method:** GET
+-   **Description:** Get all existing products
+
+-   response:
+
+```json
+[
+    {
+        "id": 1,
+        "barcode": "78113021671",
+        "product_name": "Beef - Tenderlion, Center Cut",
+        "description": "at lorem integer tincidunt ante vel ipsum praesent blandit lacinia",
+        "presentation": "unit",
+        "size": null,
+        "weight": null,
+        "created_at": null,
+        "updated_at": null
+    },
+    {
+        "id": 2,
+        "barcode": "94501157686"
+        //...
+    }
+]
+```
+
+### Product id
+
+-   **URL:** /product/{id}
+-   **Method:** GET
+-   **Description:** Search for a specific product and return to the stores that sell it
+
+-   response:
+
+```json
+{
+    "id": 14,
+    "barcode": "65155825476",
+    "product_name": "Pie Shells 10",
+    "description": "rhoncus dui vel sem sed sagittis nam congue risus semper porta volutpat quam",
+    "presentation": "unit",
+    "size": null,
+    "weight": null,
+    "created_at": null,
+    "updated_at": null,
+    "stores": [
+        {
+            "id": 1,
+            "status": 1,
+            "store_name": "Test Store",
+            "description": "Testing Store",
+            "phone": "22244455",
+            "address": "Main Street 123",
+            "neighborhood": "",
+            "rating": "0.00",
+            "id_user": 1,
+            "created_at": "2024-08-26T15:55:39.000000Z",
+            "updated_at": "2024-08-26T15:55:39.000000Z",
+            "pivot": {
+                "id_product": 14,
+                "id_store": 1,
+                "amount": "5.00",
+                "created_at": "2024-08-26T19:43:38.000000Z",
+                "updated_at": "2024-08-26T19:43:38.000000Z"
+            }
+        }
+    ]
+}
+```
+
+### Stores
+
+-   **URL:** /stores
+-   **Method:** GET
+-   **Description:** Get all existing stores
+
+-   response:
+
+```json
+[
+    {
+        "id": 1,
+        "status": 1,
+        "store_name": "Test Store",
+        "description": "Testing Store",
+        "phone": "22244455",
+        "address": "Main Street 123",
+        "neighborhood": "",
+        "rating": "0.00",
+        "id_user": 1,
+        "created_at": "2024-08-26T15:55:39.000000Z",
+        "updated_at": "2024-08-26T15:55:39.000000Z"
+    }
+]
+```
+
+### Stores id
+
+-   **URL:** /store/{id}
+-   **Method:** GET
+-   **Description:** Search for a specific store and return all of its products
+
+-   response:
+
+```json
+{
+    "id": 1,
+    "status": 1,
+    "store_name": "Test Store",
+    "description": "Testing Store",
+    "phone": "22244455",
+    "address": "Main Street 123",
+    "neighborhood": "",
+    "rating": "0.00",
+    "id_user": 1,
+    "created_at": "2024-08-26T15:55:39.000000Z",
+    "updated_at": "2024-08-26T15:55:39.000000Z",
+    "products": [
+        {
+            "id": 14,
+            "barcode": "65155825476",
+            "product_name": "Pie Shells 10",
+            "description": "rhoncus dui vel sem sed sagittis nam congue risus semper porta volutpat quam",
+            "presentation": "unit",
+            "size": null,
+            "weight": null,
+            "created_at": null,
+            "updated_at": null,
+            "pivot": {
+                "id_store": 1,
+                "id_product": 14,
+                "amount": "5.00",
+                "created_at": "2024-08-26T19:43:38.000000Z",
+                "updated_at": "2024-08-26T19:43:38.000000Z"
+            }
+        }
+    ]
+}
+```
+
+### Add products
+
+-   **URL:** /stores/add-products
+-   **Method:** POST
+-   **Description:** Add products to the store (url protected for stores only)
+-   **Parameters**
+
+    -   'id_product'
+    -   'id_store'
+    -   'amount'
+
+-   response:
+
+```json
+[
+    {
+        "id": 1,
+        "status": 1,
+        "store_name": "Test Store",
+        "description": "Testing Store",
+        "phone": "22244455",
+        "address": "Main Street 123",
+        "neighborhood": "",
+        "rating": "0.00",
+        "id_user": 1,
+        "created_at": "2024-08-26T15:55:39.000000Z",
+        "updated_at": "2024-08-26T15:55:39.000000Z"
+    }
+]
 ```
 
 ## Data base MER
