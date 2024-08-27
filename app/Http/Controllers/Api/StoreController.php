@@ -24,7 +24,7 @@ class StoreController extends Controller
     public function getStore($id)
     {
 
-        $stores = Store::with('products')->findOrFail($id);
+        $stores = Store::with('products', 'promotions')->findOrFail($id);
 
         return response()->json($stores, Response::HTTP_OK);
     }
@@ -69,7 +69,9 @@ class StoreController extends Controller
         $storePromotion = new store_promotion();
         $storePromotion->id_promotion = $request->id_promotion;
         $storePromotion->id_store = $request->id_store;
-        $storePromotion->amount = $request->amount;
+        $storePromotion->start_date = $request->start_date;
+        $storePromotion->end_date = $request->end_date;
+        $storePromotion->promotion_status = $request->promotion_status;
         $storePromotion->save();
 
         return response()->json($storePromotion, Response::HTTP_CREATED);
