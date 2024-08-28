@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('discounted_unit_value', total: 11, places: 2);
             $table->decimal('list_price', total: 12, places: 2);
             $table->decimal('final_value', total: 12, places: 2);
-            $table->unsignedBigInteger('id_promotion');
+            $table->unsignedBigInteger('id_promotion')->nullable();
             $table->unsignedBigInteger('id_product');
             $table->unsignedBigInteger('id_order');
             $table->foreign('id_promotion')->references('id')->on('promotions');
