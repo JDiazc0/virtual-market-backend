@@ -27,8 +27,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['middleware' => ['userType:store'], 'prefix' => 'store'], function () {
         Route::post('add-products', [StoreController::class, 'addProducts']);
         Route::post('add-promotions', [StoreController::class, 'addPromotions']);
-        Route::post('active-promotions/{id}', [StoreController::class, 'activatePromotion']);
-        Route::post('deactive-promotions/{id}', [StoreController::class, 'deactivatePromotion']);
+        Route::post('active-promotions', [StoreController::class, 'activatePromotion']);
+        Route::post('deactive-promotions', [StoreController::class, 'deactivatePromotion']);
     });
 
     // Protected user client routes

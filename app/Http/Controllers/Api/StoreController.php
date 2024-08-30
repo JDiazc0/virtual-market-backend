@@ -48,7 +48,7 @@ class StoreController extends Controller
         $storeProduct->amount = $request->amount;
         $storeProduct->save();
 
-        return response()->json($storeProduct, Response::HTTP_CREATED);
+        return response()->json(['message' => 'Product Add succesfylly'], Response::HTTP_CREATED);
     }
 
     // Add promotions to store 
@@ -65,7 +65,7 @@ class StoreController extends Controller
             ]
         );
 
-        // Create a new store product
+        // Create a new store promotion
         $storePromotion = new store_promotion();
         $storePromotion->id_promotion = $request->id_promotion;
         $storePromotion->id_store = $request->id_store;
@@ -74,24 +74,48 @@ class StoreController extends Controller
         $storePromotion->promotion_status = $request->promotion_status;
         $storePromotion->save();
 
-        return response()->json($storePromotion, Response::HTTP_CREATED);
+        return response()->json(['message' => 'Promotion Add succesfylly'], Response::HTTP_CREATED);
     }
 
     // Deactivate promotion
-    public function deactivatePromotion($id)
+    public function deactivatePromotion(Request $request)
     {
-        $storePromotion = store_promotion::findOrFail($id);
-        $storePromotion->promotion_status = false;
+        $request->validate([
+            'id_store' => 'required|exists:stores,id',
+            'id_promotion' => 'required',
+        ]);
+
+        $storePromotion = store_promotion::where('id_promotion', $request->id_promotion)
+            ->where('id_store', $request->id_store)
+            ->first();
+
+        if (!$storePromotion) {
+            return response()->json(['error' => 'Promotion not found or does not belong to the store'], Response::HTTP_NOT_FOUND);
+        }
+
+        $storePromotion->promotion_status = 0;
         $storePromotion->save();
 
         return response()->json(['message' => 'Promotion deactivated successfully'], Response::HTTP_OK);
     }
 
     // Activate promotion
-    public function activatePromotion($id)
+    public function activatePromotion(Request $request)
     {
-        $storePromotion = store_promotion::findOrFail($id);
-        $storePromotion->promotion_status = true;
+        $request->validate([
+            'id_store' => 'required|exists:stores,id',
+            'id_promotion' => 'required',
+        ]);
+
+        $storePromotion = store_promotion::where('id_promotion', $request->id_promotion)
+            ->where('id_store', $request->id_store)
+            ->first();
+
+        if (!$storePromotion) {
+            return response()->json(['error' => 'Promotion not found or does not belong to the store'], Response::HTTP_NOT_FOUND);
+        }
+
+        $storePromotion->promotion_status = 1;
         $storePromotion->save();
 
         return response()->json(['message' => 'Promotion activated successfully'], Response::HTTP_OK);
