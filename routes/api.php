@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PromotionController;
+use App\Http\Controllers\Api\ShoppingCartController;
 use App\Http\Controllers\Api\StoreController;
 
 // Public routes
@@ -28,5 +29,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('add-promotions', [StoreController::class, 'addPromotions']);
         Route::post('active-promotions/{id}', [StoreController::class, 'activatePromotion']);
         Route::post('deactive-promotions/{id}', [StoreController::class, 'deactivatePromotion']);
+    });
+
+    // Protected user client routes
+    Route::group(['middleware' => ['userType:client'], 'prefix' => 'user-client'], function () {
+        Route::post('shoppingCart', [ShoppingCartController::class, 'addOrUpdateShoppingCart']);
+        Route::delete('shoppingCart', [ShoppingCartController::class, 'deleteFromShoppingCart']);
     });
 });
