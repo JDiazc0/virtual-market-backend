@@ -67,6 +67,21 @@ class ShoppingCartController extends Controller
         }
     }
 
+    // Get the entire cart of a client
+    public function getCart(Request $request)
+    {
+        $request->validate([
+            'id_user' => 'required|exists:users,id',
+            'id_store' => 'required|exists:stores,id'
+        ]);
+
+        $shoppingCart = shopping_cart::where('id_user', $request->id_user)
+            ->where('id_store', $request->id_store)
+            ->get();
+
+        return response()->json(["message" => "successfully achieved", $shoppingCart], Response::HTTP_OK);
+    }
+
 
     // Private validation methods
     private function validateRequest(Request $request)
