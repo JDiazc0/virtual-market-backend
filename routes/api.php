@@ -35,5 +35,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['middleware' => ['userType:client'], 'prefix' => 'user-client'], function () {
         Route::post('shoppingCart', [ShoppingCartController::class, 'addOrUpdateShoppingCart']);
         Route::delete('shoppingCart', [ShoppingCartController::class, 'deleteFromShoppingCart']);
+        Route::post('cart', [ShoppingCartController::class, 'getCart']);
     });
 });
