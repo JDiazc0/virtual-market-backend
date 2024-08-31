@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('product_name');
             $table->string('description');
             $table->string('presentation');
+            $table->decimal('price', 10, 2);
             $table->string('size')->nullable();
             $table->decimal('weight', total: 6, places: 2)->nullable();
             $table->timestamps();
