@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('address');
             $table->unsignedBigInteger('id_store');
             $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_status');
+            $table->foreign('id_status')->references('id')->on('order_statuses');
             $table->foreign('id_store')->references('id')->on('stores');
             $table->foreign('id_user')->references('id')->on('users');
             $table->timestamps();

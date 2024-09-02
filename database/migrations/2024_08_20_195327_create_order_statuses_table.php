@@ -13,9 +13,7 @@ return new class extends Migration
     {
         Schema::create('order_statuses', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('order_status')->default(1);
-            $table->unsignedBigInteger('id_order');
-            $table->foreign('id_order')->references('id')->on('orders');
+            $table->string('order_status')->default("created");
             $table->timestamps();
         });
     }
