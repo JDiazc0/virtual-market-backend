@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\ShoppingCartController;
@@ -36,5 +37,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('shoppingCart', [ShoppingCartController::class, 'addOrUpdateShoppingCart']);
         Route::delete('shoppingCart', [ShoppingCartController::class, 'deleteFromShoppingCart']);
         Route::post('cart', [ShoppingCartController::class, 'getCart']);
+        Route::post('generateOrder', [OrderController::class, 'createOrder']);
     });
 });
