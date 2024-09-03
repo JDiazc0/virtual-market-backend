@@ -69,4 +69,45 @@ class DiscountCalculator
 
         return $totalDiscount;
     }
+
+    public static function calculateDiscountedPrice($product, $storeId)
+    {
+        $now = Carbon::now();
+        $originalPrice = $product->price;
+        $discountedPrice = $originalPrice;
+        $appliedPromotionId = null;
+
+        // Check for product-specific promotion
+        $productPromotion = Promotion::where('id_product', $product->id)
+            ->whereHas('stores', function ($query) use ($storeId, $now) {
+                $query->where('id_store', $storeId)
+                    ->where('promotion_status', 1)
+                    ->where('start_date', '<=', $now)
+                    ->where('end_date', '>=', $now);
+            })
+            ->first();
+
+        if ($productPromotion) {
+            $discountedPrice *= (1 - $productPromotion->percentage / 100);
+            $appliedPromotionId = $productPromotion->id;
+        }
+
+        // Check for store-wide promotions
+        $storePromotion = Promotion::whereNull('id_product')
+            ->whereHas('stores', function ($query) use ($storeId, $now) {
+                $query->where('id_store', $storeId)
+                    ->where('promotion_status', 1)
+                    ->where('start_date', '<=', $now)
+                    ->where('end_date', '>=', $now);
+            })
+            ->first();
+
+        if ($storePromotion) {
+            $discountedPrice *= (1 - $storePromotion->percentage / 100);
+            $appliedPromotionId = $storePromotion->id;
+        }
+
+        // Return the final discounted price and the last applied promotion ID
+        return ['price' => $discountedPrice, 'promotion_id' => $appliedPromotionId];
+    }
 }
