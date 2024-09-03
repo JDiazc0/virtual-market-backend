@@ -108,4 +108,24 @@ class OrderController extends Controller
             return response()->json(['error' => 'Error creating the order' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getOrders(Request $request)
+    {
+        $request->validate([
+            'id_store' => 'required|exists:stores,id',
+            'id_user' => 'required|exists:users,id',
+            'id_status' => 'nullable|exists:order_statuses,id'
+        ]);
+
+        $query = order::where('id_store', $request->id_store)
+            ->where('id_user', $request->id_user);
+
+        if ($request->has('id_status') && $request->id_status !== null) {
+            $query->where('id_status', $request->id_status);
+        }
+
+        $orders = $query->with('orderedItems')->get();
+
+        return response()->json(['orders' => $orders], Response::HTTP_OK);
+    }
 }
