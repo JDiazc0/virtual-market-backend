@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class order extends Model
 {
@@ -23,4 +24,9 @@ class order extends Model
         'final_value',
         'id_status'
     ];
+
+    public function orderedItems(): HasMany
+    {
+        return $this->hasMany(ordered_item::class, 'id_order');
+    }
 }
