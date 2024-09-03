@@ -109,6 +109,7 @@ class OrderController extends Controller
         }
     }
 
+    // Get orders from a customer in a store
     public function getOrders(Request $request)
     {
         $request->validate([
