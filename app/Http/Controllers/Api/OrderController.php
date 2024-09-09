@@ -8,22 +8,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use App\Helpers\DiscountCalculator;
+use App\Http\Requests\CreateOrderRequest;
+use App\Http\Requests\GetOrdersRequest;
 use App\Models\order;
 use App\Models\ordered_item;
 
 class OrderController extends Controller
 {
     // Create Order
-    public function createOrder(Request $request)
+    public function createOrder(CreateOrderRequest $request)
     {
-        $request->validate([
-            'id_user' => 'required|exists:users,id',
-            'id_store' => 'required|exists:stores,id',
-            'instructions' => 'nullable|string',
-            'delivery_date' => 'required',
-            'address' => 'required',
-            'rate' => 'required|min:1|max:5'
-        ]);
 
         try {
             DB::beginTransaction();
@@ -110,13 +104,8 @@ class OrderController extends Controller
     }
 
     // Get orders from a customer in a store
-    public function getOrders(Request $request)
+    public function getOrders(GetOrdersRequest $request)
     {
-        $request->validate([
-            'id_store' => 'required|exists:stores,id',
-            'id_user' => 'required|exists:users,id',
-            'id_status' => 'nullable|exists:order_statuses,id'
-        ]);
 
         $query = order::where('id_store', $request->id_store)
             ->where('id_user', $request->id_user);
